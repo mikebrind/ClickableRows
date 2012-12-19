@@ -1,0 +1,27 @@
+﻿@{
+    Page.Title = "Clickable Rows";
+    var db = Database.Open("Northwind");
+    var query = "SELECT * FROM Customers";
+    var data = db.Query(query);
+    var columns = new[]{"CustomerID", "CompanyName", "ContactName", "Address", "City", "Country", "Phone"};
+    var grid = new WebGrid(data, ajaxUpdateContainerId: "grid", columnNames: columns);
+}
+<h1>Clickable Rows</h1>
+<div id="grid">
+    @grid.GetHtml(    
+        tableStyle : "table",
+        alternatingRowStyle : "alternate",
+        headerStyle : "header"
+    )
+</div>
+@section script{
+<script type="text/javascript">
+    $(function(){
+        $('tbody tr').live('hover', function(){
+            $(this).toggleClass('clickable');
+        }).live('click', function(){
+            location.href = '/Details/' + $(this).find('td:first').text();  
+        }); 
+    });
+</script>       
+}
